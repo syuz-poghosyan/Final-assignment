@@ -1,1 +1,2 @@
 It is important to make sure I know how to track changes here.
+This new line is a demonstration of making changes and committing them.
