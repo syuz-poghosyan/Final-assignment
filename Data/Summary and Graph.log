@@ -1,0 +1,118 @@
+--------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\Poghosyan_Syuzanna\Desktop\Syuz\Data\Summary and Graph.log
+  log type:  text
+ opened on:  10 Nov 2024, 11:24:06
+
+. * ----------------------------------------------------------------------------
+. 
+. use "New_Data\Used_cars_clean.dta", clear 
+
+. 
+. describe
+
+Contains data from New_Data\Used_cars_clean.dta
+ Observations:           383                  
+    Variables:            10                  9 Nov 2024 20:27
+--------------------------------------------------------------------------------
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+--------------------------------------------------------------------------------
+price           long    %10.0g                Price of the car (in USD)
+area            str11   %11s                  Area
+name            str51   %51s                  
+fuel            str6    %9s                   Fuel Type
+odometer        long    %10.0g                Distance travelled (in miles)
+color           str6    %9s                   Color
+transmission    str9    %9s                   Transmission system
+type            str11   %11s                  Car Type
+dealer          byte    %8.0g                 
+productionyear  float   %9.0g                 
+--------------------------------------------------------------------------------
+Sorted by: 
+
+. summarize
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+       price |        383     7213.54    4652.034        361      18500
+        area |          0
+        name |          0
+        fuel |          0
+    odometer |        383    100273.7    61953.44          0     350000
+-------------+---------------------------------------------------------
+       color |          0
+transmission |          0
+        type |          0
+      dealer |        383    .4412533    .4971863          0          1
+production~r |        383    2007.345    5.911323       1992       2017
+
+. 
+. 
+. summarize price if dealer == 1, detail
+
+                  Price of the car (in USD)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%         1790           1790
+ 5%         2100           1790
+10%         2400           2100       Obs                 169
+25%         5999           2100       Sum of wgt.         169
+
+50%         9700                      Mean           9299.893
+                        Largest       Std. dev.      4438.299
+75%        12888          16499
+90%        14995          16499       Variance       1.97e+07
+95%        16225          16499       Skewness       -.109519
+99%        16499          16995       Kurtosis       1.902022
+
+. summarize price if odometer < 300000 & fuel == "gas", detail
+
+                  Price of the car (in USD)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%          600            400
+ 5%         1500            550
+10%         1850            550       Obs                 358
+25%         3200            600       Sum of wgt.         358
+
+50%         6325                      Mean           7181.676
+                        Largest       Std. dev.      4707.436
+75%        10500          17000
+90%        14900          17000       Variance       2.22e+07
+95%        15999          18500       Skewness       .5787657
+99%        17000          18500       Kurtosis       2.186596
+
+. 
+. 
+. egen mean_price = mean(price), by(dealer)
+
+. generate difference_price = price - mean_price
+
+. summarize difference_price
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+difference~e |        383   -.0001173    4265.545  -7509.894   12934.09
+
+. 
+. gen relative_price = "low" if difference_price <0
+(176 missing values generated)
+
+. replace relative_price = "high" if missing(relative_price)
+variable relative_price was str3 now str4
+(176 real changes made)
+
+. 
+. twoway scatter price odometer
+
+. 
+. 
+. 
+. * ----------------------------------------------------------------------------
+. log close
+      name:  <unnamed>
+       log:  C:\Users\Poghosyan_Syuzanna\Desktop\Syuz\Data\Summary and Graph.log
+  log type:  text
+ closed on:  10 Nov 2024, 11:24:18
+--------------------------------------------------------------------------------

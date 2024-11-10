@@ -1,0 +1,234 @@
+--------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\Poghosyan_Syuzanna\Desktop\Syuz\Data\Cleaning.log
+  log type:  text
+ opened on:   9 Nov 2024, 20:27:08
+
+. * ----------------------------------------------------------------------------
+. 
+. import delimited Used_cars_raw.csv, varnames(1) bindquotes(strict) encoding("u
+> tf-8") clear
+(15 vars, 1,095 obs)
+
+. 
+. describe
+
+Contains data
+ Observations:         1,095                  
+    Variables:            15                  
+--------------------------------------------------------------------------------
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+--------------------------------------------------------------------------------
+v1              int     %8.0g                 
+price           str8    %9s                   
+area            str11   %11s                  
+subarea         str20   %20s                  
+name            str51   %51s                  
+condition       str9    %9s                   
+cylinders       str11   %11s                  
+drive           str3    %9s                   
+fuel            str6    %9s                   
+odometer        str7    %9s                   
+paintcolor      str6    %9s                   
+size            str11   %11s                  
+transmission    str9    %9s                   
+type            str11   %11s                  
+dealer          byte    %8.0g                 
+--------------------------------------------------------------------------------
+Sorted by: 
+     Note: Dataset has changed since last saved.
+
+. summarize
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+          v1 |      1,095    578.3562    342.6643          1       1199
+       price |          0
+        area |          0
+     subarea |          0
+        name |          0
+-------------+---------------------------------------------------------
+   condition |          0
+   cylinders |          0
+       drive |          0
+        fuel |          0
+    odometer |          0
+-------------+---------------------------------------------------------
+  paintcolor |          0
+        size |          0
+transmission |          0
+        type |          0
+      dealer |      1,095    .3050228    .4606275          0          1
+
+. 
+. label variable price "Price of the car (in USD)"
+
+. label variable fuel "Fuel Type"
+
+. label variable type "Car Type"
+
+. label variable transmission "Transmission system"
+
+. label variable size "Relative size of the car"
+
+. rename paintcolor color
+
+. label variable color "Color"
+
+. label variable odometer "Distance travelled (in miles)"
+
+. label variable drive "Drivetrain type"
+
+. label variable cylinders "Number of cylinders in the engine"
+
+. label variable area "Area"
+
+. label variable subarea "Subarea"
+
+. 
+. 
+. generate productionyear = real(substr(name, 1, 4))
+
+. replace price = subinstr(price, "$", "", .)
+(1,011 real changes made)
+
+. replace price = subinstr(price, ",", "", .)
+(938 real changes made)
+
+. destring price, replace force
+price: contains nonnumeric characters; replaced as long
+(84 missing values generated)
+
+. 
+. destring odometer, replace force
+odometer: contains nonnumeric characters; replaced as long
+(331 missing values generated)
+
+. 
+. replace name = subinstr(name, substr(name, 1, 5), "", .)
+(1,095 real changes made)
+
+. replace name = upper(name)
+(952 real changes made)
+
+. replace name = subinstr(name, "_", "", .)
+(34 real changes made)
+
+. replace name = subinstr(name, ".", "", .)
+(21 real changes made)
+
+. replace name = subinstr(name, "-", " ", .)
+(2 real changes made)
+
+. replace name = subinstr(name, "  2016", "", .)
+(3 real changes made)
+
+. replace name = subinstr(name, "  ", " ", .)
+(8 real changes made)
+
+. replace name = subinstr(name, "  ", " ", .)
+(2 real changes made)
+
+. tabulate name
+
+                                   name |      Freq.     Percent        Cum.
+----------------------------------------+-----------------------------------
+                           TOYOTA CAMRY |        610       55.71       55.71
+                TOYOTA CAMRY BAD CREDIT |          2        0.18       55.89
+             TOYOTA CAMRY BAD CREDIT OK |          3        0.27       56.16
+                        TOYOTA CAMRY CE |          5        0.46       56.62
+                    TOYOTA CAMRY HYBRID |         46        4.20       60.82
+                TOYOTA CAMRY HYBRID XLE |          3        0.27       61.10
+                        TOYOTA CAMRY LE |        166       15.16       76.26
+                       TOYOTA CAMRY LE  |          3        0.27       76.53
+                     TOYOTA CAMRY LE 24 |         20        1.83       78.36
+                   TOYOTA CAMRY LE 4 DR |          2        0.18       78.54
+                   TOYOTA CAMRY LE 4CYL |          3        0.27       78.81
+                    TOYOTA CAMRY LE 4DR |          2        0.18       79.00
+              TOYOTA CAMRY LE 4DR SEDAN |         18        1.64       80.64
+              TOYOTA CAMRY LE FWD 210HP |          2        0.18       80.82
+                  TOYOTA CAMRY LE SEDAN |          1        0.09       80.91
+                        TOYOTA CAMRY LX |          2        0.18       81.10
+                  TOYOTA CAMRY OR PRIUS |          1        0.09       81.19
+                        TOYOTA CAMRY SE |         52        4.75       85.94
+              TOYOTA CAMRY SE 4DR SEDAN |          9        0.82       86.76
+               TOYOTA CAMRY SE SEDAN 4D |          1        0.09       86.85
+                  TOYOTA CAMRY SE SPORT |          3        0.27       87.12
+                    TOYOTA CAMRY SOLARA |         57        5.21       92.33
+TOYOTA CAMRY SOLARA 2DR CPE SPT V6 AU.. |          1        0.09       92.42
+        TOYOTA CAMRY SOLARA CONVERTIBLE |          7        0.64       93.06
+                 TOYOTA CAMRY SOLARA SE |          1        0.09       93.15
+              TOYOTA CAMRY SOLARA SPORT |          2        0.18       93.33
+                        TOYOTA CAMRY V6 |          1        0.09       93.42
+                    TOYOTA CAMRY V6 XLE |          1        0.09       93.52
+                       TOYOTA CAMRY XLE |         63        5.75       99.27
+              TOYOTA CAMRY XLE ADVANCED |          4        0.37       99.63
+                    TOYOTA CAMRY XLE V6 |          2        0.18       99.82
+            TOYOTA CAMRY XSE BAD CREDIT |          2        0.18      100.00
+----------------------------------------+-----------------------------------
+                                  Total |      1,095      100.00
+
+. 
+. replace area = strproper(area)
+(1,095 real changes made)
+
+. replace subarea = strproper(subarea)
+(972 real changes made)
+
+. 
+. replace type = "" if type == "NA"
+(455 real changes made)
+
+. codebook type
+
+--------------------------------------------------------------------------------
+type                                                                    Car Type
+--------------------------------------------------------------------------------
+
+                  Type: String (str11)
+
+         Unique values: 7                         Missing "": 455/1,095
+
+            Tabulation: Freq.  Value
+                          455  ""
+                            2  "SUV"
+                           11  "convertible"
+                           40  "coupe"
+                            2  "pickup"
+                          564  "sedan"
+                           20  "truck"
+                            1  "wagon"
+
+. 
+. keep price area name fuel odometer productionyear dealer type transmission col
+> or
+
+. 
+. keep if type =="sedan" & transmission == "automatic" & !missing(odometer)
+(613 observations deleted)
+
+. replace color = "" if color == "NA"
+(71 real changes made)
+
+. drop if missing(color)
+(71 observations deleted)
+
+. drop if missing(price)
+(28 observations deleted)
+
+. 
+. mkdir "New_Data"
+
+. save New_Data\Used_cars_clean.dta
+file New_Data\Used_cars_clean.dta saved
+
+. 
+. 
+. * ----------------------------------------------------------------------------
+. log close
+      name:  <unnamed>
+       log:  C:\Users\Poghosyan_Syuzanna\Desktop\Syuz\Data\Cleaning.log
+  log type:  text
+ closed on:   9 Nov 2024, 20:27:09
+--------------------------------------------------------------------------------
