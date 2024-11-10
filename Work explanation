@@ -1,0 +1,5 @@
+In order to reproduce my work:
+
+1. There is a python code (Python-code.ipynb) + the excel file of cleaned data (Used_cars_clean)
+2. In the Data folder, you can find 2 .do files (namely, Cleaning.do and Summary and Graph.do), the pdf of the graph itself, the raw data from the webpage, and lastly, another folder (New_Data) that includes the cleaned version of the dataset.
+3. For the work in Git Bash, I have added 2 Word docs with the codes and outputs to push everything to the depository.
